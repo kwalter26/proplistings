@@ -1,17 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
-import * as firebase from 'firebase'
+import { FirebaseApp } from 'angularfire2';
+import * as firebase from 'firebase';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class FirebaseService {
-
   listings: FirebaseListObservable<any[]>;
   listing: FirebaseObjectObservable<any[]>;
   folder: any;
 
-  constructor(
-    private af: AngularFireDatabase
-  ) {
+  constructor(private af: AngularFireDatabase, @Inject(FirebaseApp) private firebaseApp: firebase.app.App) {
     this.folder = 'listingimages';
   }
 
@@ -22,12 +21,12 @@ export class FirebaseService {
 
   getListingDetails(id) {
     this.listing = this.af.object('/listings/' + id) as FirebaseObjectObservable<Listing>
-    return this.listing
+    return this.listing;
   }
 
-  addListing(listing){
+  addListing(listing) {
     // Create root ref
-    let storageRef = firebase.storage().ref();
+    let storageRef = this.firebaseApp.storage().ref();
     for(let selectedFile of [(<HTMLInputElement>document.getElementById('image')).files[0]]){
       let path = `/${this.folder}/${selectedFile.name}`;
       let iRef = storageRef.child(path);

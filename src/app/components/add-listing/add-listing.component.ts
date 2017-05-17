@@ -8,29 +8,28 @@ import { Router } from '@angular/router';
   styleUrls: ['./add-listing.component.css']
 })
 export class AddListingComponent implements OnInit {
-
-  title:any;
-  owner:any;
-  city:any;
-  bedrooms:any;
-  type:any;
-  price:any;
-  image:any;
+  title: any;
+  owner: any;
+  city: any;
+  bedrooms: any;
+  price: any;
+  type: any;
+  image: any;
 
   constructor(
-    private firebaseService:FirebaseService,
-    private router:Router
+    private firebaseService: FirebaseService,
+    private router: Router
   ) { }
 
   ngOnInit() {
   }
 
-  onAddSubmit(){
+  onAddSubmit() {
     let listing = {
       title: this.title,
-      city: this.title,
+      city: this.city,
       owner: this.owner,
-      bedrooms:this.bedrooms,
+      bedrooms: this.bedrooms,
       price: this.price,
       type: this.type
     }
