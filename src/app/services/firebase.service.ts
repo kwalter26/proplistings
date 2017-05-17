@@ -7,15 +7,15 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class FirebaseService {
   listings: FirebaseListObservable<any[]>;
-  listing: FirebaseObjectObservable<any[]>;
+  listing: FirebaseObjectObservable<any>;
   folder: any;
 
   constructor(private af: AngularFireDatabase, @Inject(FirebaseApp) private firebaseApp: firebase.app.App) {
     this.folder = 'listingimages';
+    this.listings = this.af.list('/listings') as FirebaseListObservable<Listing[]>
   }
 
   getListings() {
-    this.listings = this.af.list('/listings') as FirebaseListObservable<Listing[]>
     return this.listings;
   }
 
@@ -25,9 +25,8 @@ export class FirebaseService {
   }
 
   addListing(listing) {
-    // Create root ref
     let storageRef = this.firebaseApp.storage().ref();
-    for(let selectedFile of [(<HTMLInputElement>document.getElementById('image')).files[0]]){
+    for (let selectedFile of [(<HTMLInputElement>document.getElementById('image')).files[0]]) {
       let path = `/${this.folder}/${selectedFile.name}`;
       let iRef = storageRef.child(path);
       iRef.put(selectedFile).then((snapshot) => {
@@ -38,7 +37,17 @@ export class FirebaseService {
     }
   }
 
+  updateListing(id, listing) {
+    return this.listings.update(id, listing);
+  }
+
+  deleteListing(id){
+    return this.listings.remove(id);
+  }
+
 }
+
+
 
 interface Listing {
   $key?: string;
