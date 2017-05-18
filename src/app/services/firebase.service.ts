@@ -31,17 +31,26 @@ export class FirebaseService {
       let iRef = storageRef.child(path);
       iRef.put(selectedFile).then((snapshot) => {
         listing.image = selectedFile.name;
-        listing.path = path;
+        listing.path = snapshot.downloadURL;
         return this.listings.push(listing);
-      });
+      })
     }
   }
 
   updateListing(id, listing) {
-    return this.listings.update(id, listing);
+    let storageRef = this.firebaseApp.storage().ref();
+    for (let selectedFile of [(<HTMLInputElement>document.getElementById('image')).files[0]]) {
+      let path = `/${this.folder}/${selectedFile.name}`;
+      let iRef = storageRef.child(path);
+      iRef.put(selectedFile).then((snapshot) => {
+        listing.image = selectedFile.name;
+        listing.path = snapshot.downloadURL;
+        return this.listings.update(id, listing);
+      })
+    }
   }
 
-  deleteListing(id){
+  deleteListing(id) {
     return this.listings.remove(id);
   }
 

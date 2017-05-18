@@ -10,6 +10,7 @@ import { environment } from '../environments/environment';
 import {FlashMessagesModule} from 'angular2-flash-messages';
 
 import { FirebaseService } from './services/firebase.service';
+import { FirebaseUserService} from './services/firebase-user.service';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -48,7 +49,8 @@ const appRoutes: Routes = [
     FlashMessagesModule
   ],
   providers: [
-    FirebaseService
+    FirebaseService,
+    FirebaseUserService
   ],
   bootstrap: [AppComponent]
 })

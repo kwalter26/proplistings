@@ -1,5 +1,12 @@
-<ul class="list-group">
-  <li class="list-group-item"  *ngFor="let listing of listings">
-    <a [routerLink]="['/listing/' + listing.$key]">{{listing.title}}</a>
-  </li>
-</ul>
+<div class="panel panel-default" *ngFor="let listing of listings">
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-4">
+        <a [routerLink]="['/listing/' + listing.$key]" ><img class="img-thumbnail" height="100px" src="{{listing.path}}"></a>
+      </div>
+      <div class="col-md-8">
+        <h3><a [routerLink]="['/listing/' + listing.$key]">{{listing.title}}</a> | <small>{{listing.city}}</small></h3>
+      </div>
+    </div>
+  </div>
+</div>
