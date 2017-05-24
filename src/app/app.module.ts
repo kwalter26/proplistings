@@ -11,6 +11,7 @@ import {FlashMessagesModule} from 'angular2-flash-messages';
 
 import { FirebaseService } from './services/firebase.service';
 import { FirebaseUserService} from './services/firebase-user.service';
+import { LoginGuardService } from './services/login-guard.service';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -22,10 +23,10 @@ import { EditListingComponent } from './components/edit-listing/edit-listing.com
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'listings', component: ListingsComponent },
-  { path: 'listing/:id', component: ListingComponent },
-  { path: 'add-listings', component: AddListingComponent },
-  { path: 'edit-listing/:id', component: EditListingComponent}
+  { path: 'listings', component: ListingsComponent, canActivate: [LoginGuardService] },
+  { path: 'listing/:id', component: ListingComponent, canActivate: [LoginGuardService]  },
+  { path: 'add-listings', component: AddListingComponent, canActivate: [LoginGuardService]  },
+  { path: 'edit-listing/:id', component: EditListingComponent, canActivate: [LoginGuardService] }
 ]
 
 @NgModule({
@@ -50,7 +51,8 @@ const appRoutes: Routes = [
   ],
   providers: [
     FirebaseService,
-    FirebaseUserService
+    FirebaseUserService,
+    LoginGuardService
   ],
   bootstrap: [AppComponent]
 })

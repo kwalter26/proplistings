@@ -8,31 +8,49 @@ import * as firebase from 'firebase';
 @Injectable()
 export class FirebaseUserService {
 
-  currentUser: Observable<firebase.User>;
+  currentUser: any
   user: FirebaseObjectObservable<any>;
-  userId: any;
 
-  constructor(private afData:AngularFireDatabase, private afAuth: AngularFireAuth, private flashMessage: FlashMessagesService) {
+  constructor(private afData: AngularFireDatabase, private afAuth: AngularFireAuth, private flashMessage: FlashMessagesService) {
     this.currentUser = afAuth.authState;
   }
 
-  getCurrentUser(){
+  getCurrentUser() {
     return this.currentUser;
   }
 
-  getUser(){
-
-  }
-
   login() {
-    this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-    
-  }
+    this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(result => {
+      let email = result.user.email;
+      let name = result.user.displayName;
+      let uid = result.user.uid;
+      this.user = this.afData.object('/users/' + uid) as FirebaseObjectObservable<User>
+      this.user.subscribe(user => {
+        console.log(user)
+        if (!user.$exists) {
+          console.log('User does not exist');
+          this.afData.list('/users').update(uid, {
+          name: name
+        })
+        } else {
+          console.log('User does exist');
+        }
+      });
 
+
+
+
+    })
+  }
 
   logout() {
     this.afAuth.auth.signOut();
-    this.flashMessage.show('You are logged out',{cssClass:'alert-success',timeout: 3000});
+    this.flashMessage.show('You are logged out', { cssClass: 'alert-success', timeout: 3000 });
   }
+}
+
+interface User {
+  $key?: string;
+  name: string;
 }
 
