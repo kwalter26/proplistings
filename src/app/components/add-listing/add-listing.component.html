@@ -2,17 +2,24 @@
 <br />
 <h2 class="page-header">Add Listing</h2>
 <form (submit)="onAddSubmit()">
-  <div class="form-group">
-    <label>Title</label>
-    <input class="form-control" type="text" [(ngModel)]="title" name="title" required>
-  </div>
-  <div class="form-group">
-    <label>City</label>
-    <input class="form-control" type="text" [(ngModel)]="city" name="city" required>
-  </div>
-  <div class="form-group">
-    <label>Owner</label>
-    <input class="form-control" type="text" [(ngModel)]="owner" name="owner" required>
+  <div class="row">
+    <div class="col-md-4">
+      <img class="img-thumbnail" height="100px" [src]="path">
+    </div>
+    <div class="col-md-8">
+      <div class="form-group">
+        <label>Title</label>
+        <input class="form-control" type="text" [(ngModel)]="title" name="title" required>
+      </div>
+      <div class="form-group">
+        <label>City</label>
+        <input class="form-control" type="text" [(ngModel)]="city" name="city" required>
+      </div>
+      <div class="form-group">
+        <label>Owner</label>
+        <input class="form-control" type="text" [(ngModel)]="owner" name="owner" required>
+      </div>
+    </div>
   </div>
   <div class="form-group">
     <label>Bedrooms</label>
@@ -27,7 +34,7 @@
     </select>
   </div>
   <div class="form-group">
-    <input id="image" name="image" [(ngModel)]="image" type="file">
+    <input id="image" name="image" [(ngModel)]="path" type="file">
   </div>
   <div class="form-group">
     <label>Price</label>

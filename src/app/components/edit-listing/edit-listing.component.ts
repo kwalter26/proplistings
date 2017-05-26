@@ -17,6 +17,7 @@ export class EditListingComponent implements OnInit {
   price: any;
   type: any;
   image: any;
+  path: any;
 
   constructor(
     private firebaseService: FirebaseService,
@@ -34,7 +35,8 @@ export class EditListingComponent implements OnInit {
       this.bedrooms = listing.bedrooms;
       this.price = listing.price;
       this.type = listing.type;
-      this.image = listing.image;
+      this.image = "";
+      this.path = listing.path;
     })
   }
 

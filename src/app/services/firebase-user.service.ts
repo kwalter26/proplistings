@@ -13,10 +13,19 @@ export class FirebaseUserService {
 
   constructor(private afData: AngularFireDatabase, private afAuth: AngularFireAuth, private flashMessage: FlashMessagesService) {
     this.currentUser = afAuth.authState;
+    this.currentUser
+        .take(1)
+        .do(authState => {
+          this.user = this.afData.object('/users/' + authState.uid) as FirebaseObjectObservable<User>
+        });
   }
 
-  getCurrentUser() {
+  getAuthUser() {
     return this.currentUser;
+  }
+
+  getDataUser(){
+    return this.user;
   }
 
   login() {
@@ -25,21 +34,13 @@ export class FirebaseUserService {
       let name = result.user.displayName;
       let uid = result.user.uid;
       this.user = this.afData.object('/users/' + uid) as FirebaseObjectObservable<User>
-      this.user.subscribe(user => {
-        console.log(user)
-        if (!user.$exists) {
-          console.log('User does not exist');
+      this.currentUser
+        .take(1)
+        .do(authState => {
           this.afData.list('/users').update(uid, {
-          name: name
-        })
-        } else {
-          console.log('User does exist');
-        }
-      });
-
-
-
-
+            name: authState.displayName
+          })
+        });
     })
   }
 

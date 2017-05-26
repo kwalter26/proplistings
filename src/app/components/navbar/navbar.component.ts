@@ -19,7 +19,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user = this.userService.getCurrentUser();
+    this.user = this.userService.getAuthUser();
   }
 
   onLogin() {
